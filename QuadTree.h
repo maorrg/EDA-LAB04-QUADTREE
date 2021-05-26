@@ -85,7 +85,7 @@ public:
             for (int i = 0; i < 4; ++i) {
                 //topLeft en primera iteración, topRight en la segunda, bottomLeft en la tercera
                 if (averageOfMatrix(fourQuadrants[i]) == 0) {
-                    //node->getTurn(i) = new Node(); //valor 0
+                    node->getTurn(i) = new Node(); //valor 0
                 } else if (averageOfMatrix(fourQuadrants[i]) == this->maxVal) {
                     node->topLeft = new Node(); //valor 0
                 } else {

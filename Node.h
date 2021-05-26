@@ -14,7 +14,7 @@ struct Node {
 
     Node(const Point &point, int value) : point(point), value(value) {}
     
-    Node* getTurn(int n){
+    Node*& getTurn(int n){
         switch(n){
             case 0:
                 return this->topLeft;
