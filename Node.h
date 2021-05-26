@@ -9,13 +9,6 @@ struct Node {
 
     Point point;
     int value;
-
-    Node() {
-        //DEFAULT CONSTRUCTOR
-    }
-
-    Node(Point point, int value) {
-        this->point = point;
-        this->value = value;
-    }
+    
+    Node(const Point &point, int value) : point(point), value(value) {}
 };

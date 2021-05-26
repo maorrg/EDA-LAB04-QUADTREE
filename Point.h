@@ -6,8 +6,5 @@ struct Point{
     int x;
     int y;
 
-    Point(x,y){
-        this->x = x;
-        this->y = y;
-    }
+    Point(int x, int y) : x(x), y(y) {}
 };
