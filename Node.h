@@ -8,11 +8,20 @@ struct Node {
     Node* bottomRight;
 
     Point point;
-    int value;
 
-    Node() {}
+    Node() {
+        topLeft= nullptr;
+        topRight= nullptr;
+        bottomLeft= nullptr;
+        bottomRight= nullptr;
+    }
 
-    Node(const Point &point, int value) : point(point), value(value) {}
+    explicit Node(const Point &point) : point(point) {
+        topLeft= nullptr;
+        topRight= nullptr;
+        bottomLeft= nullptr;
+        bottomRight= nullptr;
+    }
     
     Node*& getTurn(int n){
         switch(n){
@@ -24,7 +33,8 @@ struct Node {
                 return this->bottomLeft;
             case 3:
                 return this->bottomRight;
+            default:
+                break;
         }
-        
     }
 };
