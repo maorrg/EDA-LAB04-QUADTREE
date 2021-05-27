@@ -90,8 +90,7 @@ public:
 
     void build(vector<vector<Point>> pixels) {            
         vector<vector<vector<Point >>> fourQuadrants = divideIntoQuadrants(pixels);
-        cout << endl << "wiii -> " << calculateQuadrantNumber(fourQuadrants[1][0][0],height,width)<< " x:"<< fourQuadrants[1][0][0].x << " y:"<< fourQuadrants[1][0][0].y;
-        cout << "\nh: " << height << " \nwidth: " << width;
+        cout << endl << "wiii -> " << calculateQuadrantNumber(Point(2,2,0),height,width);
         root = insert(root, pixels);
     }
 
@@ -121,7 +120,6 @@ public:
     int calculateQuadrantNumber(Point pixel, int h, int w){
         int halfW = w/2;
         int halfH = h/2;
-        
         if(pixel.x < halfW && pixel.y < halfH){
             return 0;
         } else if(pixel.x >= halfW && pixel.y < halfH){
