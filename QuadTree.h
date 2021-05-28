@@ -7,7 +7,14 @@ private:
     int height;
     int width;
     int maxVal;
-    
+
+public:
+
+    Node* getRoot() {
+        return root;
+    }
+
+
     vector<vector<vector<Point >>> divideIntoQuadrants(const vector<vector<Point>> &pixels) const {
         vector<vector<vector<Point>>> fourQuadrants;
 
@@ -68,9 +75,6 @@ private:
         return result;
     }
 
-
-public:
-
     QuadTree(int width, int height, int maxVal, vector<vector<int>> pixels) {
         this->width = width;
         this->height = height;
@@ -90,15 +94,13 @@ public:
 
     void build(vector<vector<Point>> pixels) {            
         vector<vector<vector<Point >>> fourQuadrants = divideIntoQuadrants(pixels);
-        cout << endl << "wiii -> " << calculateQuadrantNumber(Point(2,2,0),height,width);
-        root = insert(root, pixels);
+        root = insert(root, fourQuadrants);
     }
 
-    Node* insert(Node* node, vector<vector<Point>> pixels){
+    Node* insert(Node* node, vector<vector<vector<Point >>> fourQuadrants){
         if(node == nullptr){
             node = new Node();
         }else {
-            vector<vector<vector<Point >>> fourQuadrants = divideIntoQuadrants(pixels);
             for (int i = 0; i < 4; ++i) {
                 recursiveInsert(node, fourQuadrants[i], i);
             }
@@ -108,38 +110,37 @@ public:
     
     Node* recursiveInsert(Node* node, vector<vector<Point>> quadrant, int nq){
         double average = averageOfMatrix(quadrant);
-        if (average == 0 || average== this->maxVal) {
+        if (average == 0 || average== this->maxVal || (quadrant[0].size() < 2 && quadrant.size() < 2)) {
             Point t(quadrant[0][0].x, quadrant[0][0].y, average);
             node->getTurn(nq) = new Node(t); //valor 0
         } else {
-           // node = recursiveInsert(node->getTurn(nq),);
-            //continuar la recursión
+            node = insert(node,divideIntoQuadrants(quadrant));
         }
+        return node;
     }
     
     int calculateQuadrantNumber(Point pixel, int h, int w){
-        int halfW = w/2;
-        int halfH = h/2;
+        int halfH = w/2;
+        int halfW = h/2;
         if(pixel.x < halfW && pixel.y < halfH){
             return 0;
         } else if(pixel.x >= halfW && pixel.y < halfH){
-            return 1;
-        } else if(pixel.x < halfW && pixel.y >= halfH){
             return 2;
+        } else if(pixel.x < halfW && pixel.y >= halfH){
+            return 1;
         } else if(pixel.x >= halfW && pixel.y >= halfH){
             return 3;
         }
         return -1;
     }
     
-    
-    
-
-
-
-
-
-
-
-
+    void preOrder(Node *node) {
+        if(node != nullptr) {
+            std::cout << node->point.x << ", "<< node->point.y << " | Value: " << node->point.value << std::endl;
+            preOrder(node->topLeft);
+            preOrder(node->topRight);
+            preOrder(node->bottomLeft);
+            preOrder(node->bottomRight);
+        }
+    }   
 };
