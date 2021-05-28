@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
     
-    Pgm pgmFile1("dragon.pgm");
+    Pgm pgmFile1("dragonin.txt");
     
     QuadTree qt(pgmFile1.getWidth(), pgmFile1.getHeight(),pgmFile1.getMaxValue(), pgmFile1.getImage());
     qt.preOrder(qt.getRoot());

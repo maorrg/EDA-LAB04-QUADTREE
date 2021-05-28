@@ -15,9 +15,11 @@ public:
     }
 
 
-    vector<vector<vector<Point >>> divideIntoQuadrants(const vector<vector<Point>> &pixels) const {
+    vector<vector<vector<Point >>> divideIntoQuadrants(vector<vector<Point>> pixels) const {
         vector<vector<vector<Point>>> fourQuadrants;
-
+        int height = pixels.size();
+        int width = pixels[0].size();
+        
         int extraRow = 0, extraColumn = 0;
         if(height % 2 != 0)
             ++extraRow;
@@ -98,13 +100,13 @@ public:
     }
 
     Node* insert(Node* node, vector<vector<vector<Point >>> fourQuadrants){
-        if(node == nullptr){
+        if(node == nullptr)
             node = new Node();
-        }else {
-            for (int i = 0; i < 4; ++i) {
-                recursiveInsert(node, fourQuadrants[i], i);
-            }
+        
+        for (int i = 0; i < 4; ++i) {
+            recursiveInsert(node, fourQuadrants[i], i);
         }
+        
         return node;
     }
     
@@ -113,6 +115,9 @@ public:
         if (average == 0 || average== this->maxVal || (quadrant[0].size() < 2 && quadrant.size() < 2)) {
             Point t(quadrant[0][0].x, quadrant[0][0].y, average);
             node->getTurn(nq) = new Node(t); //valor 0
+        }else if ((quadrant.size() <= 2 && quadrant[0].size() <=1) || (quadrant.size() <= 1 && quadrant[0].size() <=2)){
+            Point t(quadrant[0][0].x, quadrant[0][0].y, average);
+            node->getTurn(nq) = new Node(t);
         } else {
             node = insert(node,divideIntoQuadrants(quadrant));
         }
