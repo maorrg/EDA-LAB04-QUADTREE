@@ -57,8 +57,8 @@ public:
                 ++count;
             }
         }
-        if(count == 1)
-            return -1;
+//        if(count == 1)
+//            return -1;
         
         return sum/count;
     }
