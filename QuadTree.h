@@ -1,5 +1,6 @@
 #include "Node.h"
 #include <vector>
+#include <map>
 
 class QuadTree {
 private:
@@ -15,10 +16,11 @@ public:
     }
 
 
-    vector<vector<vector<Point >>> divideIntoQuadrants(vector<vector<Point>> pixels) const {
-        vector<vector<vector<Point>>> fourQuadrants;
+    map<int, vector<vector<Point >>> divideIntoQuadrants(vector<vector<Point>> pixels) const {
+        map<int, vector<vector<Point>>> fourQuadrants;
         int height = pixels.size();
         int width = pixels[0].size();
+        int quadrantNumber = 0;
         
         int extraRow = 0, extraColumn = 0;
         if(height % 2 != 0)
@@ -41,7 +43,7 @@ public:
                     cout << endl;
                 }
                 cout<<"+++++" << endl;
-                fourQuadrants.push_back(matrix);
+                fourQuadrants[quadrantNumber++] = matrix;
                 matrix.clear();
             }
         }
@@ -95,33 +97,30 @@ public:
 
 
     void build(vector<vector<Point>> pixels) {            
-        vector<vector<vector<Point >>> fourQuadrants = divideIntoQuadrants(pixels);
+        map<int, vector<vector<Point >>> fourQuadrants = divideIntoQuadrants(pixels);
         root = insert(root, fourQuadrants);
     }
 
-    Node* insert(Node* node, vector<vector<vector<Point >>> fourQuadrants){
-        if(node == nullptr)
-            node = new Node();
+    Node* insert(Node* node, map<int, vector<vector<Point >>> fourQuadrants){
+        //auto data = divideIntoQuadrants(fourQuadrants[i]);
         
         for (int i = 0; i < 4; ++i) {
-            recursiveInsert(node, fourQuadrants[i], i);
+            if(fourQuadrants[i].empty())
+                continue;
+            double average = averageOfMatrix(fourQuadrants[i]);
+            if(node == nullptr) {
+                Point t(fourQuadrants[i][0][0].x, fourQuadrants[i][0][0].y, average);
+                node = new Node(t);
+                return node;
+            } else if (average == 0 || average== this->maxVal) {
+                Point t(fourQuadrants[i][0][0].x, fourQuadrants[i][0][0].y, average);
+                node->getTurn(i) = new Node(t);
+            } else {
+                insert(node->getTurn(i),divideIntoQuadrants(fourQuadrants[i]));
+            }
         }
+        return node;
         
-        return node;
-    }
-    
-    Node* recursiveInsert(Node* node, vector<vector<Point>> quadrant, int nq){
-        double average = averageOfMatrix(quadrant);
-        if (average == 0 || average== this->maxVal || (quadrant[0].size() < 2 && quadrant.size() < 2)) {
-            Point t(quadrant[0][0].x, quadrant[0][0].y, average);
-            node->getTurn(nq) = new Node(t); //valor 0
-        }else if ((quadrant.size() <= 2 && quadrant[0].size() <=1) || (quadrant.size() <= 1 && quadrant[0].size() <=2)){
-            Point t(quadrant[0][0].x, quadrant[0][0].y, average);
-            node->getTurn(nq) = new Node(t);
-        } else {
-            node = insert(node,divideIntoQuadrants(quadrant));
-        }
-        return node;
     }
     
     int calculateQuadrantNumber(Point pixel, int h, int w){

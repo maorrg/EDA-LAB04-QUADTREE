@@ -10,6 +10,7 @@ struct Node {
     Point point;
 
     Node() {
+        point = {0,0,0};
         topLeft= nullptr;
         topRight= nullptr;
         bottomLeft= nullptr;
