@@ -34,9 +34,9 @@ public:
         int yDivided = yStart + (yEnd - yStart) / 2;
         //if(xDivided >= 0 && yDivided >=0){
             QuadTreeNode* topLeft = this->recursiveInsert(xStart, xDivided, yStart, yDivided);
-            QuadTreeNode* topRight = this->recursiveInsert(xStart, xDivided, yStart, yDivided);
-            QuadTreeNode* bottomLeft = this->recursiveInsert(xStart, xDivided, yStart, yDivided);
-            QuadTreeNode* bottomRight = this->recursiveInsert(xStart, xDivided, yStart, yDivided);
+            QuadTreeNode* topRight = this->recursiveInsert(xDivided, xEnd, yStart, yDivided);
+            QuadTreeNode* bottomLeft = this->recursiveInsert(xStart, xDivided, yDivided, yEnd);
+            QuadTreeNode* bottomRight = this->recursiveInsert(xDivided, xEnd, yDivided, yEnd);
             auto isUniqueAndColorAverage = this->getIsUniqueAndcolorAverage(topLeft, topRight, bottomLeft, bottomRight);
             bool isUnique = isUniqueAndColorAverage.first;
             double colorAverage = isUniqueAndColorAverage.second;
@@ -51,19 +51,22 @@ public:
 
     pair<bool, double> getIsUniqueAndcolorAverage(QuadTreeNode* topLeft,QuadTreeNode* topRight,QuadTreeNode* bottomLeft,QuadTreeNode* bottomRight){
         double sumValue = 0;
-        int numValidNodes = 0;
         bool isUnique = true;
         vector<QuadTreeNode*> validNodes;
         if(topLeft != nullptr) validNodes.push_back(topLeft);
         if(topRight != nullptr) validNodes.push_back(topRight);
         if(bottomLeft != nullptr) validNodes.push_back(bottomLeft);
         if(bottomRight != nullptr) validNodes.push_back(bottomRight);
+        if(validNodes.size() == 1)
+            return make_pair(true, validNodes[0]->color);
+        if(validNodes.empty())
+            return make_pair(false, 0);
         int compareColor = validNodes[0]->color;
         for(int i=0; i < validNodes.size(); i++){
             sumValue += validNodes[i]->color;
             if(compareColor != validNodes[i]->color) isUnique = false;
         }
-        return make_pair(isUnique, (sumValue / numValidNodes));
+        return make_pair(isUnique, (sumValue / validNodes.size()));
     }
 
     int getWidth(){
