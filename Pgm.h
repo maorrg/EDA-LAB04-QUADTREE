@@ -5,6 +5,7 @@
 #ifndef EDA_LAB04_QUADTREE_PGM_H
 #define EDA_LAB04_QUADTREE_PGM_H
 
+#include <iostream>
 #include <vector>
 #include <fstream>
 #include <sstream>
@@ -17,7 +18,7 @@ class Pgm{
     int height;
     int width;
     int maxValue;
-    vector<vector<int>> image;
+    vector<vector<int> > image;
 
     void read(string filePath){
         string line;
@@ -28,10 +29,10 @@ class Pgm{
 
             getline(myfile,inputLine);
             if(inputLine != "P2")
-                cerr << "Version error" << endl;
+                std::cerr << "Version error" << endl;
 
             getline(myfile,inputLine);
-            cout << "Comment : " << inputLine << endl;
+            std::cout << "Comment : " << inputLine << endl;
 
             ss << myfile.rdbuf();
             ss >> this->width >> this->height >> this->maxValue;
@@ -49,7 +50,7 @@ class Pgm{
             myfile.close();
         }
     }
-    
+
 public:
     Pgm(string fileName) {
         read(fileName);

@@ -1,16 +1,12 @@
-#include <iostream>
-#include "Pgm.h"
 #include "QuadTree.h"
 
-using namespace std;
 
 int main() {
-    
-    Pgm pgmFile1("dragonin.txt");
-    
-    QuadTree qt(pgmFile1.getWidth(), pgmFile1.getHeight(),pgmFile1.getMaxValue(), pgmFile1.getImage());
+	QuadTree qt("./images/dragon.pgm");
     qt.preOrder(qt.getRoot());
+    qt.writeTree("./images/dragonCompressed.txt");
     
+    qt.convertCompressedToPGM("./images/dragonCompressed.txt", "./images/dragonCompressedFinal.pgm") ;
     
     return 0;
 }
