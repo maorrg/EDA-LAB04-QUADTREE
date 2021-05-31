@@ -50,7 +50,7 @@ class Pgm{
             myfile.close();
         }
     }
-    
+
 public:
     Pgm(string fileName) {
         read(fileName);

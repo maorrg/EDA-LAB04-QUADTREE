@@ -107,7 +107,62 @@ public:
         return reinterpret_cast<ofstream *&>(myfile);
     }
 
-        void preOrder(QuadTreeNode *node) {
+    void convertCompressedToPGM(string filePath, string filePathOut) {
+        vector<vector<int> > image;
+        ifstream myfile(filePath);
+        if (myfile.is_open()){
+            stringstream ss;
+            string inputLine;
+
+            getline(myfile,inputLine);
+            if(inputLine != "P2COMPRESSED")
+                std::cerr << "Version error" << endl;
+
+            getline(myfile,inputLine);
+            std::cout << "Comment : " << inputLine << endl;
+
+            ss << myfile.rdbuf();
+            int widthF, heightF, maxValueF;
+            ss >> widthF >> heightF >> maxValueF;
+
+            for (int i = 0; i < heightF; ++i) {
+                vector<int> temp( widthF);
+                image.push_back(temp);
+                temp.clear();
+            }
+
+            while(!ss.eof()){
+                double color;
+                int topLeftPointX, topLeftPointY, bottomRightPointX, bottomRightPointY;
+                ss >> color >> topLeftPointX >> topLeftPointY >> bottomRightPointX >> bottomRightPointY;
+
+                for (auto i = topLeftPointY; i < bottomRightPointY; ++i) {
+                    for (auto j = topLeftPointX; j < bottomRightPointX; ++j) {
+                        image[i][j] = (int)color;
+                    }
+                }
+            }
+            myfile.close();
+        }
+
+        ofstream myOutFile(filePathOut, ios::out);
+
+        if (myOutFile.is_open()) {
+            myOutFile << "P2" << "\n"
+                      << "# Reconstrucción." << "\n"
+                      << this->width << " " << this->height << "\n"
+                      << this->maxValue << "\n" << flush;
+            for(auto & i : image) {
+                for (int j : i) {
+                    myOutFile << j << "\t" << flush;
+                }
+                myOutFile << "\n" << flush;
+            }
+        }
+        myOutFile.close();
+    }
+
+    void preOrder(QuadTreeNode *node) {
         if(node != nullptr) {
             std::cout << node->bottomRightPoint->x << ", "<< node->bottomRightPoint->y << " | Color: " << node->color << std::endl;
             preOrder(node->topLeft);
