@@ -41,7 +41,7 @@ struct QuadTreeNode {
     }
     
     std::string exportData(){
-        return std::to_string(this->color) + " "
+        return std::to_string((int)this->color) + " "
         + this->topLeftPoint->exportData() + " "
         + this->bottomRightPoint->exportData();
     }

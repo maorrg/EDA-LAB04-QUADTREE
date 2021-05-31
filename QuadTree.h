@@ -3,6 +3,8 @@
 #include <queue>
 #include <fstream>
 #include <string>
+#include <cstdint>
+#include <filesystem>
 
 
 class QuadTree {
@@ -160,6 +162,17 @@ public:
             }
         }
         myOutFile.close();
+        
+        //Compression Rate
+        auto compressedFile = std::filesystem::file_size(filePath);
+        auto pmgFile = std::filesystem::file_size(filePathOut);
+        
+        
+        
+        cout << "COMPRESSED: " << compressedFile << " bytes"<<  endl;
+        cout << "OLD: " << pmgFile <<" bytes" << endl;
+        cout << "ratio " << (((double)compressedFile-(double)pmgFile)/(double)pmgFile)*100.0 <<"%" << endl;
+
     }
 
     void preOrder(QuadTreeNode *node) {

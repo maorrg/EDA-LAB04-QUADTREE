@@ -2,12 +2,11 @@
 
 
 int main() {
-	QuadTree qt("./images/feep.pgm");
-    cout << "Hola";
+	QuadTree qt("./images/dragon.pgm");
     qt.preOrder(qt.getRoot());
-    qt.writeTree("./images/feepCompressed.txt");
+    qt.writeTree("./images/dragonCompressed.txt");
     
-    qt.convertCompressedToPGM("./images/feepCompressed.txt", "./images/feepCompressedFinal.pgm") ;
+    qt.convertCompressedToPGM("./images/dragonCompressed.txt", "./images/dragonCompressedFinal.pgm") ;
     
     return 0;
 }
