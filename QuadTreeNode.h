@@ -1,4 +1,5 @@
 #include "Point.h"
+#include <string>
 
 struct QuadTreeNode {
     double color;
@@ -37,6 +38,12 @@ struct QuadTreeNode {
         this->topRight = topRight;
         this->bottomLeft = bottomLeft;
         this->bottomRight = bottomRight;
+    }
+    
+    std::string exportData(){
+        return std::to_string(this->color) + " "
+        + this->topLeftPoint->exportData() + " "
+        + this->bottomRightPoint->exportData();
     }
 
 

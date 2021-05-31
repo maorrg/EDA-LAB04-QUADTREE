@@ -1,6 +1,9 @@
 #include "QuadTreeNode.h"
 #include "Pgm.h"
 #include <queue>
+#include <fstream>
+#include <string>
+
 
 class QuadTree {
 private:
@@ -80,8 +83,31 @@ public:
     QuadTreeNode *getRoot() const {
         return root;
     }
+    
+    void writeTree(string filePath){
+        string line;
+        ofstream myfile(filePath, ios::out);
+        if (myfile.is_open()) {
+            myfile << "P2COMPRESSED" << "\n"
+                   << "# Archivo comprimido." << "\n"
+                   << this->width << " " << this->height << "\n"
+                   << this->maxValue << "\n" << this->writeTreeRecursive(myfile, this->root) << flush;
+        }
+        myfile.close();
+    }
 
-    void preOrder(QuadTreeNode *node) {
+    ofstream*& writeTreeRecursive(ofstream& myfile, QuadTreeNode *node) {
+        if(node != nullptr){
+            myfile << node->exportData() << "\n" << flush;
+            writeTreeRecursive(myfile, node->topLeft);
+            writeTreeRecursive(myfile, node->topRight);
+            writeTreeRecursive(myfile, node->bottomLeft);
+            writeTreeRecursive(myfile, node->bottomRight);
+        }
+        return reinterpret_cast<ofstream *&>(myfile);
+    }
+
+        void preOrder(QuadTreeNode *node) {
         if(node != nullptr) {
             std::cout << node->bottomRightPoint->x << ", "<< node->bottomRightPoint->y << " | Color: " << node->color << std::endl;
             preOrder(node->topLeft);

@@ -1,3 +1,4 @@
+#include <string>
 
 struct Point {
     int x;
@@ -8,4 +9,9 @@ struct Point {
         this->x = x;
         this->y = y;
     }
+    
+    std::string exportData(){
+        return std::to_string(x) + " " + std::to_string(y);
+    }
+    
 };
